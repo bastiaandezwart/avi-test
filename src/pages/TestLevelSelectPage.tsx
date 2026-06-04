@@ -9,7 +9,7 @@ interface TestLevelSelectPageProps {
 
 export function TestLevelSelectPage({ student, results }: TestLevelSelectPageProps) {
   const studentResults = results
-    .filter(r => r.studentId === student.id)
+    .filter(r => r.studentId === student.id && !r.deletedAt)
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
   const lastResult = studentResults[0];

@@ -9,6 +9,7 @@ interface StudentDetailPageProps {
   results: TestResult[];
   onDeleteStudent: (id: string) => void;
   onDeleteResult: (id: string) => void;
+  onRestoreResult: (id: string) => void;
 }
 
 function formatSeconds(seconds: number): string {
@@ -17,21 +18,15 @@ function formatSeconds(seconds: number): string {
   return `${m}:${s.toString().padStart(2, '0')}`;
 }
 
-function calcReadingSpeed(wordCount: number, seconds: number): number {
-  if (seconds <= 0) return 0;
-  return Math.round((wordCount / seconds) * 60);
-}
-
 function exportCSV(student: Student, results: TestResult[]) {
-  const header = 'Datum,AVI-niveau,Fouten,Tijd (sec),Leessnelheid (w/min),Beoordeling,Notities';
+  const header = 'Datum,AVI-niveau,Fouten,Tijd (sec),Beoordeling,Notities';
   const rows = results
-    .filter(r => r.studentId === student.id)
+    .filter(r => r.studentId === student.id && !r.deletedAt)
     .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
     .map(r => {
-      const speed = calcReadingSpeed(100, r.readingTimeSeconds);
       const date = new Date(r.date).toLocaleDateString('nl-NL');
       const notes = r.notes ? `"${r.notes.replace(/"/g, '""')}"` : '';
-      return `${date},${r.aviLevel},${r.errors},${r.readingTimeSeconds},${speed},${r.classification},${notes}`;
+      return `${date},${r.aviLevel},${r.errors},${r.readingTimeSeconds},${r.classification},${notes}`;
     });
   const csv = [header, ...rows].join('\n');
   const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
@@ -43,16 +38,19 @@ function exportCSV(student: Student, results: TestResult[]) {
   URL.revokeObjectURL(url);
 }
 
-
-export function StudentDetailPage({ student, results, onDeleteStudent, onDeleteResult }: StudentDetailPageProps) {
+export function StudentDetailPage({ student, results, onDeleteStudent, onDeleteResult, onRestoreResult }: StudentDetailPageProps) {
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [confirmDeleteResultId, setConfirmDeleteResultId] = useState<string | null>(null);
+  const [showDeleted, setShowDeleted] = useState(false);
 
-  const studentResults = results
+  const allStudentResults = results
     .filter(r => r.studentId === student.id)
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
-  const handleDelete = () => {
+  const activeResults = allStudentResults.filter(r => !r.deletedAt);
+  const deletedResults = allStudentResults.filter(r => !!r.deletedAt);
+
+  const handleDeleteStudent = () => {
     onDeleteStudent(student.id);
     navigate('/');
   };
@@ -62,13 +60,8 @@ export function StudentDetailPage({ student, results, onDeleteStudent, onDeleteR
     setConfirmDeleteResultId(null);
   };
 
-  const formatDate = (dateStr: string) => {
-    return new Date(dateStr).toLocaleDateString('nl-NL', {
-      day: 'numeric',
-      month: 'short',
-      year: 'numeric',
-    });
-  };
+  const formatDate = (dateStr: string) =>
+    new Date(dateStr).toLocaleDateString('nl-NL', { day: 'numeric', month: 'short', year: 'numeric' });
 
   return (
     <div className="min-h-screen bg-gray-50 pb-6">
@@ -112,12 +105,12 @@ export function StudentDetailPage({ student, results, onDeleteStudent, onDeleteR
             )}
             <div>
               <p className="text-gray-500">Toetsen gedaan</p>
-              <p className="font-medium text-gray-800">{studentResults.length}</p>
+              <p className="font-medium text-gray-800">{activeResults.length}</p>
             </div>
-            {studentResults.length > 0 && (
+            {activeResults.length > 0 && (
               <div>
                 <p className="text-gray-500">Laatste niveau</p>
-                <p className="font-semibold text-gray-800">{studentResults[0].aviLevel}</p>
+                <p className="font-semibold text-gray-800">{activeResults[0].aviLevel}</p>
               </div>
             )}
           </div>
@@ -139,7 +132,7 @@ export function StudentDetailPage({ student, results, onDeleteStudent, onDeleteR
         <div>
           <div className="flex items-center justify-between mb-3">
             <h2 className="text-base font-semibold text-gray-800">Toetshistorie</h2>
-            {studentResults.length > 0 && (
+            {activeResults.length > 0 && (
               <button
                 onClick={() => exportCSV(student, results)}
                 className="flex items-center gap-1.5 text-blue-600 text-sm font-medium active:text-blue-800"
@@ -152,11 +145,12 @@ export function StudentDetailPage({ student, results, onDeleteStudent, onDeleteR
             )}
           </div>
 
-          {studentResults.length === 0 ? (
+          {/* Active results */}
+          {activeResults.length === 0 && deletedResults.length === 0 ? (
             <div className="bg-white rounded-xl border border-gray-100 p-6 text-center text-gray-400">
               <p>Nog geen toetsen gedaan</p>
             </div>
-          ) : (
+          ) : activeResults.length === 0 ? null : (
             <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
@@ -171,7 +165,7 @@ export function StudentDetailPage({ student, results, onDeleteStudent, onDeleteR
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-50">
-                    {studentResults.map(result =>
+                    {activeResults.map(result =>
                       confirmDeleteResultId === result.id ? (
                         <tr key={result.id} className="bg-red-50">
                           <td colSpan={6} className="px-3 py-2.5">
@@ -222,6 +216,60 @@ export function StudentDetailPage({ student, results, onDeleteStudent, onDeleteR
               </div>
             </div>
           )}
+
+          {/* Deleted results (audit trail) */}
+          {deletedResults.length > 0 && (
+            <div className="mt-3">
+              <button
+                onClick={() => setShowDeleted(v => !v)}
+                className="flex items-center gap-2 text-sm text-gray-400 font-medium mb-2 active:text-gray-600"
+              >
+                <svg
+                  className={`w-4 h-4 transition-transform ${showDeleted ? 'rotate-90' : ''}`}
+                  fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+                Verwijderd ({deletedResults.length})
+              </button>
+
+              {showDeleted && (
+                <div className="bg-white rounded-xl border border-dashed border-gray-200 overflow-hidden">
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-sm">
+                      <tbody className="divide-y divide-gray-50">
+                        {deletedResults.map(result => (
+                          <tr key={result.id} className="opacity-50">
+                            <td className="px-3 py-2.5 text-gray-500 whitespace-nowrap line-through">
+                              {formatDate(result.date)}
+                            </td>
+                            <td className="px-3 py-2.5 text-gray-500 line-through">{result.aviLevel}</td>
+                            <td className="px-3 py-2.5 text-center text-gray-500 line-through">{result.errors}</td>
+                            <td className="px-3 py-2.5 text-center text-gray-500 whitespace-nowrap line-through">
+                              {formatSeconds(result.readingTimeSeconds)}
+                            </td>
+                            <td className="px-3 py-2.5 line-through text-gray-400 text-xs">{result.aviLevel}</td>
+                            <td className="px-2 py-2.5 text-right">
+                              <button
+                                onClick={() => onRestoreResult(result.id)}
+                                className="p-1.5 text-gray-400 hover:text-green-600 active:text-green-700 rounded-lg transition-colors"
+                                aria-label="Score herstellen"
+                                title="Herstellen"
+                              >
+                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6" />
+                                </svg>
+                              </button>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
         </div>
 
         {/* Delete student button */}
@@ -246,7 +294,7 @@ export function StudentDetailPage({ student, results, onDeleteStudent, onDeleteR
                   Annuleren
                 </button>
                 <button
-                  onClick={handleDelete}
+                  onClick={handleDeleteStudent}
                   className="flex-1 bg-red-600 text-white font-semibold py-3 rounded-xl active:bg-red-700 min-h-[48px]"
                 >
                   Ja, verwijderen

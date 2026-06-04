@@ -28,6 +28,7 @@ export interface TestResult {
   readingTimeSeconds: number;
   classification: Classification;
   notes?: string;
+  deletedAt?: string;
 }
 
 export interface AviLevelConfig {

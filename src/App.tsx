@@ -56,7 +56,15 @@ export default function App() {
   };
 
   const handleDeleteResult = (resultId: string) => {
-    setResults(prev => prev.filter(r => r.id !== resultId));
+    setResults(prev => prev.map(r =>
+      r.id === resultId ? { ...r, deletedAt: new Date().toISOString() } : r
+    ));
+  };
+
+  const handleRestoreResult = (resultId: string) => {
+    setResults(prev => prev.map(r =>
+      r.id === resultId ? { ...r, deletedAt: undefined } : r
+    ));
   };
 
   const handleSaveTeacher = (teacher: Teacher) => {
@@ -130,6 +138,7 @@ export default function App() {
         results={results}
         onDeleteStudent={handleDeleteStudent}
         onDeleteResult={handleDeleteResult}
+        onRestoreResult={handleRestoreResult}
       />
     );
   }

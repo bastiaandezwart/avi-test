@@ -13,7 +13,7 @@ interface HomePageProps {
 export function HomePage({ students, results, teachers }: HomePageProps) {
   const getLastResult = (studentId: string): TestResult | undefined =>
     results
-      .filter(r => r.studentId === studentId)
+      .filter(r => r.studentId === studentId && !r.deletedAt)
       .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())[0];
 
   const formatDate = (dateStr: string) =>
