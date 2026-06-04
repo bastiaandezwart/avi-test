@@ -6,15 +6,15 @@ interface ClassificationBadgeProps {
 }
 
 const labels: Record<Classification, string> = {
-  goed: 'Goed',
-  voldoende: 'Voldoende',
-  onvoldoende: 'Onvoldoende',
+  beheersingsniveau: 'Beheerst',
+  instructieniveau: 'Instructie',
+  frustratieniveau: 'Frustratie',
 };
 
 const colors: Record<Classification, string> = {
-  goed: 'bg-green-100 text-green-800 border border-green-300',
-  voldoende: 'bg-amber-100 text-amber-800 border border-amber-300',
-  onvoldoende: 'bg-red-100 text-red-800 border border-red-300',
+  beheersingsniveau: 'bg-green-100 text-green-800 border border-green-300',
+  instructieniveau: 'bg-amber-100 text-amber-800 border border-amber-300',
+  frustratieniveau: 'bg-red-100 text-red-800 border border-red-300',
 };
 
 const sizes = {

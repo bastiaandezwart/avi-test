@@ -17,9 +17,9 @@ interface TestScreenPageProps {
 }
 
 function classify(errors: number, seconds: number, goodMaxErrors: number, goodMaxSeconds: number, sufficientMaxErrors: number, sufficientMaxSeconds: number): Classification {
-  if (errors <= goodMaxErrors && seconds <= goodMaxSeconds) return 'goed';
-  if (errors <= sufficientMaxErrors && seconds <= sufficientMaxSeconds) return 'voldoende';
-  return 'onvoldoende';
+  if (errors <= goodMaxErrors && seconds <= goodMaxSeconds) return 'beheersingsniveau';
+  if (errors <= sufficientMaxErrors && seconds <= sufficientMaxSeconds) return 'instructieniveau';
+  return 'frustratieniveau';
 }
 
 function formatTime(seconds: number): string {
@@ -119,9 +119,9 @@ export function TestScreenPage({ student, level, onSaveResult }: TestScreenPageP
             {formatTime(elapsed)}
           </div>
           <div className="mt-2 flex gap-2 justify-center text-xs text-gray-400">
-            <span>Goed: ≤{formatTime(config.goodMaxSeconds)}</span>
+            <span>Beheerst: ≤{formatTime(config.goodMaxSeconds)}</span>
             <span>·</span>
-            <span>Voldoende: ≤{formatTime(config.sufficientMaxSeconds)}</span>
+            <span>Instructie: ≤{formatTime(config.sufficientMaxSeconds)}</span>
           </div>
 
           {!started ? (
@@ -174,9 +174,9 @@ export function TestScreenPage({ student, level, onSaveResult }: TestScreenPageP
             </button>
           </div>
           <div className="mt-3 flex gap-3 justify-center text-xs text-gray-400">
-            <span>Goed: ≤{config.goodMaxErrors} fouten</span>
+            <span>Beheerst: ≤{config.goodMaxErrors} fouten</span>
             <span>·</span>
-            <span>Voldoende: ≤{config.sufficientMaxErrors} fouten</span>
+            <span>Instructie: ≤{config.sufficientMaxErrors} fouten</span>
           </div>
         </div>
 

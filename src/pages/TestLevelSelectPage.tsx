@@ -16,23 +16,29 @@ export function TestLevelSelectPage({ student, results }: TestLevelSelectPagePro
 
   // Suggest next level based on last result
   const getSuggestedLevel = (): AviLevel | null => {
-    if (!lastResult) return 'M3';
-    if (lastResult.classification === 'goed') {
+    if (!lastResult) return 'Start';
+    if (lastResult.classification === 'beheersingsniveau') {
       return getNextLevel(lastResult.aviLevel) ?? lastResult.aviLevel;
     }
-    if (lastResult.classification === 'voldoende') {
+    if (lastResult.classification === 'instructieniveau') {
       return lastResult.aviLevel;
     }
-    // onvoldoende - suggest same level again
+    // frustratieniveau - suggest same level again
     return lastResult.aviLevel;
   };
 
   const suggested = getSuggestedLevel();
 
   const classificationColors: Record<string, string> = {
-    goed: 'bg-green-100 text-green-700 border-green-200',
-    voldoende: 'bg-amber-100 text-amber-700 border-amber-200',
-    onvoldoende: 'bg-red-100 text-red-700 border-red-200',
+    beheersingsniveau: 'bg-green-100 text-green-700 border-green-200',
+    instructieniveau: 'bg-amber-100 text-amber-700 border-amber-200',
+    frustratieniveau: 'bg-red-100 text-red-700 border-red-200',
+  };
+
+  const classificationLabels: Record<string, string> = {
+    beheersingsniveau: 'Beheerst',
+    instructieniveau: 'Instructie',
+    frustratieniveau: 'Frustratie',
   };
 
   // Get last result per level
@@ -69,7 +75,7 @@ export function TestLevelSelectPage({ student, results }: TestLevelSelectPagePro
               <strong>Aanbevolen niveau: {suggested}</strong>
               {lastResult && (
                 <span className="text-blue-600">
-                  {' '}— gebaseerd op laatste toets ({lastResult.aviLevel}, {lastResult.classification})
+                  {' '}— gebaseerd op laatste toets ({lastResult.aviLevel}, {classificationLabels[lastResult.classification]})
                 </span>
               )}
               {!lastResult && <span className="text-blue-600"> — begin niveau voor nieuwe leerling</span>}
@@ -103,7 +109,7 @@ export function TestLevelSelectPage({ student, results }: TestLevelSelectPagePro
                 <p className="text-xs text-gray-500 mt-0.5 leading-tight">{config.schoolYear}</p>
                 {lastForLevel && (
                   <div className={`mt-2 text-xs px-1.5 py-0.5 rounded border inline-block ${classificationColors[lastForLevel.classification]}`}>
-                    {lastForLevel.classification}
+                    {classificationLabels[lastForLevel.classification]}
                   </div>
                 )}
               </button>

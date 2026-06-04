@@ -20,24 +20,24 @@ function calcReadingSpeed(wordCount: number, seconds: number): number {
 }
 
 const classificationConfig = {
-  goed: {
-    label: 'GOED',
+  beheersingsniveau: {
+    label: 'BEHEERST',
     bgClass: 'bg-green-500',
     textClass: 'text-green-700',
     bgLightClass: 'bg-green-50',
     borderClass: 'border-green-300',
     emoji: '✓',
   },
-  voldoende: {
-    label: 'VOLDOENDE',
+  instructieniveau: {
+    label: 'INSTRUCTIE',
     bgClass: 'bg-amber-500',
     textClass: 'text-amber-700',
     bgLightClass: 'bg-amber-50',
     borderClass: 'border-amber-300',
     emoji: '~',
   },
-  onvoldoende: {
-    label: 'ONVOLDOENDE',
+  frustratieniveau: {
+    label: 'FRUSTRATIE',
     bgClass: 'bg-red-500',
     textClass: 'text-red-700',
     bgLightClass: 'bg-red-50',
@@ -119,15 +119,15 @@ export function TestResultPage({ result, student, onDeleteResult }: TestResultPa
           <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-4">Normering ({result.aviLevel})</h2>
           <div className="space-y-2 text-sm">
             <div className="flex items-center justify-between py-2 border-b border-gray-50">
-              <span className="font-medium text-green-700">Goed</span>
+              <span className="font-medium text-green-700">Beheersingsniveau</span>
               <span className="text-gray-600">≤{config.goodMaxErrors} fouten én ≤{formatSeconds(config.goodMaxSeconds)} min.</span>
             </div>
             <div className="flex items-center justify-between py-2 border-b border-gray-50">
-              <span className="font-medium text-amber-700">Voldoende</span>
+              <span className="font-medium text-amber-700">Instructieniveau</span>
               <span className="text-gray-600">≤{config.sufficientMaxErrors} fouten én ≤{formatSeconds(config.sufficientMaxSeconds)} min.</span>
             </div>
             <div className="flex items-center justify-between py-2">
-              <span className="font-medium text-red-700">Onvoldoende</span>
+              <span className="font-medium text-red-700">Frustratieniveau</span>
               <span className="text-gray-600">Buiten de normen</span>
             </div>
           </div>
@@ -142,8 +142,8 @@ export function TestResultPage({ result, student, onDeleteResult }: TestResultPa
                 'text-red-700'
               }`}>
                 {result.errors}
-                {result.errors <= config.goodMaxErrors ? ' ✓ (goed)' :
-                  result.errors <= config.sufficientMaxErrors ? ' ~ (voldoende)' :
+                {result.errors <= config.goodMaxErrors ? ' ✓ (beheerst)' :
+                  result.errors <= config.sufficientMaxErrors ? ' ~ (instructie)' :
                   ' ✗ (te veel)'}
               </span>
             </div>
@@ -155,8 +155,8 @@ export function TestResultPage({ result, student, onDeleteResult }: TestResultPa
                 'text-red-700'
               }`}>
                 {formatSeconds(result.readingTimeSeconds)}
-                {result.readingTimeSeconds <= config.goodMaxSeconds ? ' ✓ (goed)' :
-                  result.readingTimeSeconds <= config.sufficientMaxSeconds ? ' ~ (voldoende)' :
+                {result.readingTimeSeconds <= config.goodMaxSeconds ? ' ✓ (beheerst)' :
+                  result.readingTimeSeconds <= config.sufficientMaxSeconds ? ' ~ (instructie)' :
                   ' ✗ (te lang)'}
               </span>
             </div>

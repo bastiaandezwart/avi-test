@@ -2,6 +2,31 @@ import { AviLevel, AviLevelConfig } from '../types';
 
 export const AVI_LEVELS: AviLevelConfig[] = [
   {
+    level: 'Start',
+    label: 'Start - Begin Groep 3',
+    schoolYear: 'Begin Groep 3',
+    wordCount: 61,
+    goodMaxErrors: 2,
+    goodMaxSeconds: 150,
+    sufficientMaxErrors: 4,
+    sufficientMaxSeconds: 185,
+    // Klankzuivere woorden (medeklinker-klinker-medeklinker), korte zinnen elk op eigen regel,
+    // minimale interpunctie, geen hoofdletters na punt behalve begin zin.
+    sampleText: `Jan zit op de mat.
+De kat zit bij Jan.
+Jan aait de kat.
+De kat spint luid.
+Piet heeft een bal.
+De bal is rood.
+Piet gooit de bal omhoog.
+De hond pakt de bal.
+Mam roept Jan en Piet.
+Ze rennen snel naar mam.
+Ze eten brood met jam.
+Jan en Piet zijn blij.
+Het is een fijne dag.`,
+  },
+  {
     level: 'M3',
     label: 'M3 - Groep 3 midden',
     schoolYear: 'Groep 3 (midden)',
@@ -10,21 +35,20 @@ export const AVI_LEVELS: AviLevelConfig[] = [
     goodMaxSeconds: 120,
     sufficientMaxErrors: 5,
     sufficientMaxSeconds: 150,
-    sampleText: `De kat zit op de mat.
-Jan heeft een bal. De bal is rood.
-Kijk, daar is een hond. De hond rent.
-Mam roept Jan. Jan komt snel.
-De zon schijnt. Het is warm.
-Piet en Lisa spelen buiten.
-Ze hebben veel plezier.
-De boom is groot. Er zit een vogel in.
-De vogel zingt een lied.
-Het is een mooie dag.
-Papa leest een boek. Het boek gaat over dieren.
-Jan wil ook lezen. Hij pakt een boek.
-De vis zwemt in het water.
-Het water is blauw en koud.
-Mama kookt eten. Het ruikt lekker.`
+    // Eenvoudige eenlettergrepige woorden met dubbele medeklinkers (kast, lamp, stip, plank).
+    // Korte zinnen. Punt als enige leesteken.
+    sampleText: `Op de kast staat een lamp. De lamp geeft licht.
+Naast de kast staat een stoel. Op de stoel ligt een jas.
+Tom pakt zijn jas en trekt hem aan.
+Buiten is het koud. De grond is wit van vorst.
+Tom stapt op zijn fiets en rijdt naar school.
+Op school hangt hij zijn tas aan de haak.
+De juf staat voor de klas. Ze zegt goedemorgen.
+Tom gaat op zijn stoel zitten.
+Zijn vriend Bas knikt naar hem. Tom knikt terug.
+Na de les gaan ze buiten spelen.
+Ze rennen snel over het schoolplein.
+Tom gooit een bal tegen de muur. Bas vangt hem op.`,
   },
   {
     level: 'E3',
@@ -35,15 +59,19 @@ Mama kookt eten. Het ruikt lekker.`
     goodMaxSeconds: 110,
     sufficientMaxErrors: 5,
     sufficientMaxSeconds: 135,
-    sampleText: `Het was een zonnige dag. Lotte en haar broer Tim gingen naar het park.
-Ze namen hun fiets mee. In het park was een grote vijver.
-Er zwommen eenden op het water. Lotte gooide wat brood in het water.
-De eenden kwamen snel dichterbij. Ze waren niet bang.
-Tim had een bal meegenomen. Ze speelden samen op het grasveld.
-Na een tijdje werden ze moe. Ze gingen op een bankje zitten.
-Mama had limonade meegenomen. Die smaakte heerlijk.
-Op de terugweg zagen ze een regenboog aan de hemel.
-Dat was heel mooi. Thuis vertelden ze papa alles over de dag.`
+    // Eenvoudige tweelettergrepige woorden (lopen, fietsen). Zinnen lopen over meerdere regels.
+    // Gebruik van hoofdletters en vraagtekens.
+    sampleText: `Op een koude ochtend stond Lisa vroeg op.
+Ze wilde gaan schaatsen op de vijver in het park.
+Mama keek bezorgd naar buiten. 'Is het wel veilig?' vroeg ze.
+Lisa had haar laarzen al aan. 'Kom je ook mee?'
+Samen liepen ze naar de vijver achter het dorp.
+Er schaatsten al veel kinderen op het gladde ijs.
+Lisa deed haar schaatsen aan en stond voorzichtig op.
+In het begin wankelde ze nog een beetje.
+Maar al snel gleed ze soepel over het ijs.
+Mama stond aan de rand en keek lachend toe.
+Ze bleven schaatsen tot de zon onderging.`,
   },
   {
     level: 'M4',
@@ -54,191 +82,230 @@ Dat was heel mooi. Thuis vertelden ze papa alles over de dag.`
     goodMaxSeconds: 95,
     sufficientMaxErrors: 5,
     sufficientMaxSeconds: 120,
-    sampleText: `Sander woont bij een boerderij. Elke ochtend helpt hij zijn vader met de dieren.
-Er zijn kippen, koeien en twee paarden op de boerderij.
-De paarden heten Blits en Donar. Sander mag soms op Blits rijden.
-Dat vindt hij het allerleukste wat er is. Hij moet wel voorzichtig zijn.
-In de zomer groeit er van alles op het land. Er zijn aardappelen, wortels en bonen.
-Na school helpt Sander met onkruid wieden. Dat is hard werken.
-Maar als de groenten klaar zijn, mogen ze die zelf opeten.
-Vers van het land smaakt alles lekkerder, vindt Sander.
-In het weekend komen zijn vrienden soms logeren op de boerderij.
-Ze spelen verstoppertje tussen de hooibalen. Dat is geweldig.`
+    // Woorden met voor- en achtervoegsels: ge-, be-, ver-, -ing, -lijk.
+    // Langere zinnen met komma's en uitroeptekens.
+    sampleText: `Sander had gisteren een verrekijker gekregen voor zijn verjaardag.
+Vandaag nam hij hem voor het eerst mee naar buiten.
+Hij liep naar het weiland achter zijn huis en keek omhoog.
+In de verte vloog een grote vogel langzaam richting het bos.
+Door de verrekijker zag Sander duidelijk de bruine vleugels en de gebogen snavel.
+'Dat is een buizerd!' riep hij blij.
+Hij had er al zo lang eentje willen zien.
+Zijn vader had hem geleerd hoe je roofvogels kunt herkennen.
+Nu had Sander het eindelijk zelf gedaan.
+Wat een geweldig gevoel! Hij besloot hier elke dag langs te lopen.`,
   },
   {
     level: 'E4',
     label: 'E4 - Groep 4 einde',
     schoolYear: 'Groep 4 (einde)',
-    wordCount: 95,
+    wordCount: 98,
     goodMaxErrors: 2,
     goodMaxSeconds: 85,
     sufficientMaxErrors: 5,
     sufficientMaxSeconds: 110,
-    sampleText: `Emma had al lang gedroomd van een eigen huisdier. Eindelijk had mama ja gezegd.
-Ze gingen naar de dierenwinkel om een cavia te kopen. Er waren er veel te kiezen.
-Emma koos een bruine cavia met een witte vlek op zijn kop. Ze noemde hem Koekje.
-Thuis maakte papa een hok in de tuin. Met zacht stro en een drinkbak.
-Elke dag gaf Emma Koekje vers gras en groenten. Hij at het graag op.
-Na een week was Koekje al niet meer bang voor Emma. Hij liet zich aaien.
-Zelfs op school praatte Emma alleen maar over haar cavia.
-Ze maakte een tekening van hem en hing die boven haar bed.
-Haar juf vond het een mooi verhaal. Emma was heel trots.
-Koekje was de beste vriend die Emma ooit had gehad.`
+    // Meerlettergrepige woorden en langere samenstellingen (zwemdiploma, startsignaal).
+    // Complexere verhaallijnen en langere teksten.
+    sampleText: `Emma wilde al jarenlang leren zwemmen. Eindelijk had ze haar zwemdiploma gehaald.
+Toch bleef haar grootste wens een rugcrawl-diploma. Dat was veel moeilijker.
+Haar zwemlerares mevrouw Jansen zei dat ze er klaar voor was.
+Op de dag van het examen was Emma zenuwachtig.
+Ze deed haar zwembril op en klom op het startblok.
+Bij het startsignaal dook ze in het koude water.
+Ze zwom met krachtige slagen naar het andere eind van het bad.
+Bij de laatste baan had ze nog genoeg energie voor een snelle finish.
+'Geslaagd!' riep mevrouw Jansen.
+Emma glimlachte breed van trots en geluk.`,
   },
   {
     level: 'M5',
     label: 'M5 - Groep 5 midden',
     schoolYear: 'Groep 5 (midden)',
-    wordCount: 100,
+    wordCount: 103,
     goodMaxErrors: 3,
     goodMaxSeconds: 80,
     sufficientMaxErrors: 6,
     sufficientMaxSeconds: 100,
-    sampleText: `Het schoolreisje naar het natuurmuseum was eindelijk zo ver. De hele klas was opgewonden.
-In de bus zongen ze liedjes en keken ze uit het raam naar de langsrijdende auto's.
-Het museum was groter dan iedereen had gedacht. Er stonden opgezette dieren in grote vitrines.
-Er was een compleet skelet van een mammoet. Dat was indrukwekkend groot.
-De gids vertelde dat mammoeten al tienduizenden jaren geleden zijn uitgestorven.
-Ze leefden in een ijstijd, toen het overal op aarde veel kouder was dan nu.
-Sommige kinderen vonden het eng, maar Noah vond het juist fascinerend.
-Hij stelde heel veel vragen aan de gids. Die was blij met zijn nieuwsgierigheid.
-Na de rondleiding mochten ze in de museumwinkel iets uitzoeken.
-Noah koos een boek over prehistorische dieren. Hij kon niet wachten om het te lezen.
-De terugreis leek veel sneller te gaan. Iedereen was moe maar tevreden.`
+    // Complexe woorden met lastige spelling (bijzonder, verwacht, ingewikkeld).
+    // Introductie van eenvoudige leenwoorden. Langere samengestelde zinnen met bijzinnen.
+    sampleText: `Vorig jaar deed onze klas mee aan een bijzonder project over duurzaamheid.
+We moesten uitzoeken hoeveel energie ons gezin per week verbruikt.
+Ik had verwacht dat dit ingewikkeld zou zijn, maar het viel mee.
+Met een speciale meter konden we het stroomverbruik van elk apparaat meten.
+Onze computer bleek de grootste verbruiker, gevolgd door de wasmachine.
+We schreven alles op en maakten een grafiek van onze bevindingen.
+Op de presentatiemiddag lieten we de klas onze resultaten zien.
+Veel klasgenoten waren verrast door de uitkomsten. Zelfs onze meester keek verbaasd.
+We besloten als groep enkele gewoonten te veranderen om energie te besparen.
+Sindsdien zetten we apparaten echt uit in plaats van op stand-by.`,
   },
   {
     level: 'E5',
     label: 'E5 - Groep 5 einde',
     schoolYear: 'Groep 5 (einde)',
-    wordCount: 100,
+    wordCount: 104,
     goodMaxErrors: 3,
     goodMaxSeconds: 70,
     sufficientMaxErrors: 6,
     sufficientMaxSeconds: 90,
-    sampleText: `Midden in het bos stond een oud verlaten huisje. Niemand wist wie er vroeger had gewoond.
-De ramen waren dichtgetimmerd met planken en het dak was half ingestort.
-Toch trokken kinderen uit het dorp er altijd naar toe. Het was een soort geheime plek.
-Olivia en haar vriendinnen hadden er een clubhuis van gemaakt. Ze hadden stoelen meegesleurd.
-Op regenachtige middagen zaten ze er met een zaklamp verhalen te lezen.
-Op een dag ontdekte Olivia iets vreemds. Achter een losse plank zat een klein doosje.
-In het doosje lag een vergeeld briefje met een handgeschreven boodschap.
-Er stond: 'Als jij dit leest, zoek dan onder de grote eik naar mijn schat.'
-De meisjes keken elkaar opgewonden aan. Was er echt een schat?
-Ze besloten de volgende dag terug te komen met een schep.
-Die nacht kon Olivia amper slapen van de spanning.`
+    // Complexere leenwoorden, gevarieerde zinsstructuren, meerdere bijzinnen.
+    sampleText: `Op het strand van Zeeland ontdekte Maya iets vreemds tussen de rotsen.
+Het was een klein, transparant wezentje dat langzaam bewoog in het ondiepe water.
+Ze knielde neer en bekeek het nauwkeurig. Het leek wel een soort kwal.
+'Raak het niet aan!' riep haar vader vanuit de verte. 'Die kunnen prikken!'
+Maya trok snel haar hand terug en pakte haar notitieboekje.
+Thuis zocht ze op internet naar soortgelijke wezens en vond na lang zoeken het antwoord.
+Het bleek een blauwe kwal te zijn, een zeldzame soort die normaal in warm water leeft.
+Hoe was die hier terechtgekomen? Misschien door de veranderende temperatuur van het zeewater.
+Ze schreef een verslag en stuurde het op naar een biologievereniging.`,
   },
   {
     level: 'M6',
     label: 'M6 - Groep 6 midden',
     schoolYear: 'Groep 6 (midden)',
-    wordCount: 105,
+    wordCount: 107,
     goodMaxErrors: 3,
     goodMaxSeconds: 65,
     sufficientMaxErrors: 6,
     sufficientMaxSeconds: 85,
-    sampleText: `Nederland is een klein land, maar het heeft een bijzondere geschiedenis op het gebied van water.
-Een groot deel van het land ligt lager dan de zeespiegel. Zonder dijken en gemalen zou het overstromen.
-Al eeuwenlang werken Nederlanders samen om het water te beheersen. Dat noemen we watermanagement.
-In de Middeleeuwen bouwden boeren de eerste dijken om hun land te beschermen.
-Later werden windmolens gebruikt om overtollig water weg te pompen.
-Tegenwoordig zijn er krachtige elektrische gemalen die dag en nacht draaien.
-Het Deltaplan, dat na de watersnoodramp van 1953 werd gemaakt, beschermt de zuidwestelijke delta.
-Gigantische stormvloedkeringen zoals de Maeslantkering kunnen worden gesloten bij dreigend hoogwater.
-Nederlandse ingenieurs worden over de hele wereld gevraagd om te helpen met wateropgaven.
-Van Bangladesh tot New Orleans: overal wordt gebruikgemaakt van Nederlandse kennis.
-Het water heeft Nederland gevormd, en de Nederlanders hebben op hun beurt het water gevormd.`
+    // Grote variatie in zinsbouw. Aanhalingstekens bij directe rede.
+    // Teksten met abstracter taalgebruik.
+    sampleText: `Mevrouw De Groot was de strengste lerares van de school, dat wist iedereen.
+Ze verwachtte stilte in de klas en keek met scherpe ogen toe als leerlingen afleidden.
+Toch was ze ook de docent die de meeste leerlingen nooit zouden vergeten.
+'Je leert hier niet alleen spelling en rekenen,' zei ze regelmatig.
+'Je leert nadenken. En dat is veel belangrijker.'
+Op de laatste schooldag gaf ze elke leerling een klein briefje met een persoonlijke boodschap.
+Daan bewaarde zijn briefje jarenlang. Er stond op: 'Jij stelt de juiste vragen. Dat is een gave.'
+Die woorden bleven hem zijn hele leven bij.
+Pas veel later begreep hij hoe groot haar invloed op hem was geweest.`,
   },
   {
     level: 'E6',
     label: 'E6 - Groep 6 einde',
     schoolYear: 'Groep 6 (einde)',
-    wordCount: 105,
+    wordCount: 109,
     goodMaxErrors: 3,
     goodMaxSeconds: 60,
     sufficientMaxErrors: 6,
     sufficientMaxSeconds: 80,
-    sampleText: `Ruimtevaart is altijd een onderwerp geweest dat mensen fascineert. Hoe ver reikt het heelal?
-Zijn wij de enigen in de kosmos, of bestaan er ergens anders ook levende wezens?
-De eerste mensen die de aarde vanuit de ruimte zagen, omschreven het als een diep gevoel van ontzag.
-Onze planeet ziet er klein en kwetsbaar uit, omgeven door de eindeloze zwarte leegte.
-Astronauten die maanden op het internationale ruimtestation ISS verblijven, ondergaan allerlei aanpassingen.
-Hun spieren en botten worden zwakker door de afwezigheid van zwaartekracht.
-Daarom sporten ze dagelijks twee uur om de gevolgen van gewichtloosheid tegen te gaan.
-Wetenschappers werken aan plannen voor een bemande missie naar Mars. Die reis duurt maanden.
-De astronauten zouden op zo'n missie vrijwel volledig op zichzelf aangewezen zijn.
-Een nieuwe generatie ruimtevaarders wordt klaargestoomd voor die uitdaging.
-Misschien staat een van de kinderen van nu over dertig jaar op de rode planeet.`
+    // Abstractere onderwerpen, complexere interpunctie, directe rede, genuanceerd taalgebruik.
+    sampleText: `In het debat over sociale media en jongeren worden regelmatig tegenstrijdige argumenten naar voren gebracht.
+Voorstanders wijzen op de mogelijkheden om met vrienden in contact te blijven en informatie te delen.
+Critici benadrukken de risico's: vergelijkingsdrang, cyberpesten en verslavend gedrag.
+Wetenschappelijk onderzoek laat een gemengd beeld zien.
+Gebruik op zich is niet schadelijk, maar de manier waarop telt.
+Jongeren die sociale media actief en doelgericht gebruiken, lijken minder last te hebben van negatieve effecten.
+Maar wie eindeloos scrollt zonder doel, meldt vaker gevoelens van leegte en ontevredenheid.
+Scholen spelen een steeds grotere rol in het bijbrengen van digitale vaardigheden.
+Leerlingen leren niet alleen hoe ze media gebruiken, maar ook hoe ze er kritisch mee omgaan.`,
   },
   {
     level: 'M7',
     label: 'M7 - Groep 7 midden',
     schoolYear: 'Groep 7 (midden)',
-    wordCount: 110,
+    wordCount: 112,
     goodMaxErrors: 3,
     goodMaxSeconds: 55,
     sufficientMaxErrors: 6,
     sufficientMaxSeconds: 75,
-    sampleText: `Klimaatverandering is een van de grootste uitdagingen van onze tijd. Door de uitstoot van broeikasgassen,
-zoals kooldioxide en methaan, warmt de aarde sneller op dan ooit tevoren in de menselijke geschiedenis.
-De gevolgen zijn al zichtbaar: smeltende gletsjers, stijgende zeespiegels en extremer weer.
-Wetenschappers zijn het erover eens dat er snel actie nodig is om verdere opwarming te beperken.
-Maar er zijn ook hoopvolle ontwikkelingen. Zonne-energie en windenergie worden steeds goedkoper.
-In veel landen worden elektrische auto's gemeengoed en neemt het gebruik van fossiele brandstoffen af.
-Jongeren over de hele wereld eisen van hun regeringen ambitieuzer klimaatbeleid.
-Bewegingen als Fridays for Future hebben miljoenen mensen in beweging gebracht.
-Technologische innovaties, zoals het afvangen van CO₂ uit de lucht, bieden nieuwe mogelijkheden.
-De transitie naar een duurzame samenleving vraagt om samenwerking tussen landen, bedrijven en burgers.
-Iedereen kan bijdragen, van het verminderen van vleesconsumptie tot bewuster energiegebruik thuis.
-De beslissingen die we nu nemen, bepalen hoe de wereld er voor toekomstige generaties uitziet.`
+    // Veel (moeilijke) leenwoorden, lange en complexe samengestelde woorden.
+    // Figuurlijk taalgebruik en uitdrukkingen (innerlijk afhaken, radertje in een machine).
+    sampleText: `Het fenomeen van de zogeheten 'stille ontslagname' is de laatste jaren sterk in opkomst.
+Daarmee wordt bedoeld dat medewerkers niet letterlijk vertrekken, maar zich geleidelijk terugtrekken uit hun werk.
+Ze doen nog precies wat van hen verwacht wordt, maar niet meer dan dat.
+Experts spreken van een symptoom van een diepere malaise op de arbeidsmarkt.
+Veel werknemers voelen zich niet langer gezien of gewaardeerd door hun werkgever.
+Ze hebben het gevoel dat ze slechts een radertje zijn in een grote machine.
+Organisatiepsychologen wijzen op het belang van zingeving en autonomie in het werk.
+'Mensen willen ergens voor staan,' zegt onderzoeker Van Dijk. 'Als dat ontbreekt, haken ze innerlijk af.'
+Bedrijven die dit negeren, zien op den duur hun productiviteit en innovatiekracht teruglopen.`,
   },
   {
     level: 'E7',
     label: 'E7 - Groep 7 einde',
     schoolYear: 'Groep 7 (einde)',
-    wordCount: 110,
+    wordCount: 113,
     goodMaxErrors: 3,
     goodMaxSeconds: 50,
     sufficientMaxErrors: 6,
     sufficientMaxSeconds: 70,
-    sampleText: `Kunstmatige intelligentie, oftewel AI, is niet langer toekomstmuziek. Het maakt deel uit van ons dagelijks leven.
-Van de aanbevelingen op streamingdiensten tot gezichtsherkenning op je smartphone: AI is overal.
-Maar hoe werkt het eigenlijk? AI-systemen leren door enorme hoeveelheden data te analyseren.
-Ze herkennen patronen die voor mensen moeilijk te zien zijn en kunnen op basis daarvan voorspellingen doen.
-Dat heeft indrukwekkende toepassingen, zoals AI die kanker eerder kan opsporen dan een arts.
-Of vertaalsoftware die talen razendsnel en steeds nauwkeuriger omzet. Maar er zijn ook zorgen.
-Als AI taken overneemt die mensen vroeger deden, wat betekent dat dan voor de arbeidsmarkt?
-En wie is verantwoordelijk als een AI-systeem een fout maakt met grote gevolgen?
-Ethici, wetenschappers en beleidsmakers debatteren intensief over de grenzen van AI-gebruik.
-De technologie zelf is neutraal. Hoe we haar inzetten, is een keuze die de samenleving moet maken.
-Onderwijs in digitale geletterdheid wordt steeds belangrijker, zodat iedereen kan meedenken over die keuzes.
-Een goed begrip van technologie stelt mensen in staat om haar te sturen in plaats van erdoor gestuurd te worden.`
+    // Meerdere betekenislagen, figuurlijk taalgebruik, uitdrukkingen, complexe redenaties.
+    sampleText: `De manier waarop een samenleving omgaat met haar verleden zegt veel over haar zelfbeeld.
+Sommige landen kiezen ervoor pijnlijke historische episodes breed uit te meten; andere houden ze angstvallig buiten beeld.
+Nederland worstelt al decennia met zijn koloniale geschiedenis. De discussie erover laait steeds opnieuw op.
+Wat betekent het om verantwoordelijkheid te erkennen zonder jezelf voortdurend in de beklaagdenbank te plaatsen?
+Historicus Rietbergen betoogt dat eerlijkheid over het verleden geen zwakte is, maar een teken van volwassenheid.
+'Een natie die haar fouten kan benoemen, is sterker dan een natie die ze verdoezelt.'
+Tegelijkertijd waarschuwen anderen tegen een al te simplistische zwart-witverdeling van historische gebeurtenissen.
+De werkelijkheid was genuanceerd, en dat vereist ook een genuanceerde herinnering.`,
+  },
+  {
+    level: 'M8',
+    label: 'M8 - Groep 8 midden',
+    schoolYear: 'Groep 8 (midden)',
+    wordCount: 116,
+    goodMaxErrors: 3,
+    goodMaxSeconds: 47,
+    sufficientMaxErrors: 6,
+    sufficientMaxSeconds: 67,
+    // Vlot lezen van complexe, informatieve teksten. Complexe interpunctie, vreemde woorden.
+    // Vergelijkbaar met krantentaal.
+    sampleText: `De Nederlandse woningmarkt staat al jaren onder druk, maar de problemen worden steeds urgenter.
+Het aantal beschikbare huurwoningen in de vrije sector daalt, terwijl de vraag gestaag toeneemt.
+Starters op de woningmarkt zijn de dupe: hun inkomen stijgt niet evenredig met de huurprijzen.
+Gemeenten zoeken naar creatieve oplossingen. Zo experimenteren Amsterdam en Utrecht met zogenoemde 'woonloten', waarbij inschrijftijd geen rol meer speelt.
+Critici vrezen echter dat dit systeem willekeur in de hand werkt en juist kwetsbare groepen benadeelt.
+Rijksbouwmeester Floris Alkemade pleit voor een fundamentele herziening van het bouwbeleid.
+'We bouwen te weinig, te traag en op de verkeerde plekken,' zei hij onlangs in een interview.
+Zonder structurele ingrepen dreigt de kloof tussen huurder en eigenaar verder te vergroten.
+Dat raakt niet alleen individuen, maar de sociale cohesie van wijken en steden als geheel.`,
+  },
+  {
+    level: 'E8',
+    label: 'E8 - Groep 8 einde',
+    schoolYear: 'Groep 8 (einde)',
+    wordCount: 118,
+    goodMaxErrors: 3,
+    goodMaxSeconds: 44,
+    sufficientMaxErrors: 6,
+    sufficientMaxSeconds: 64,
+    // Complexe, informatieve teksten op volwassen niveau (tijdschriften, vakbladen).
+    // Abstracte woordenschat, vreemde woorden, gevarieerde zinsstructuur.
+    sampleText: `De filosofie van de taal vraagt zich al eeuwenlang af in welke verhouding woorden staan tot de werkelijkheid.
+Ferdinand de Saussure introduceerde het onderscheid tussen het taalteken als zodanig en datgene waarnaar het verwijst.
+Dit lijkt abstract, maar heeft verreikende gevolgen voor hoe we naar communicatie kijken.
+Als woorden willekeurige symbolen zijn zonder intrinsieke band met de werkelijkheid, dan is betekenis altijd contextafhankelijk.
+Ludwig Wittgenstein ging nog een stap verder: 'De grenzen van mijn taal zijn de grenzen van mijn wereld.'
+Daarmee suggereerde hij dat taal niet alleen de werkelijkheid beschrijft, maar ook mede vormgeeft.
+In een tijdperk van 'alternatieve feiten' en politieke framing is deze gedachte actueler dan ooit.
+Wie de taal beheerst, beheerst in zekere mate ook de perceptie van de werkelijkheid.
+Mediawijsheid is daarmee niet alleen een educatief begrip geworden, maar een democratische noodzaak.`,
   },
   {
     level: 'Plus',
-    label: 'Plus - Boven groep 7',
-    schoolYear: 'Boven Groep 7',
-    wordCount: 115,
+    label: 'Plus - Boven Groep 8',
+    schoolYear: 'Boven Groep 8',
+    wordCount: 118,
     goodMaxErrors: 3,
-    goodMaxSeconds: 45,
+    goodMaxSeconds: 40,
     sufficientMaxErrors: 6,
-    sufficientMaxSeconds: 65,
-    sampleText: `De democratie, zoals wij die kennen, heeft haar wortels in het oude Griekenland, maar is in de loop der eeuwen
-ingrijpend veranderd en verfijnd. In Athene hadden vrije mannen het recht om deel te nemen aan de volksvergadering,
-maar vrouwen en slaven waren uitgesloten. Onze moderne democratie berust op universeel kiesrecht en de rechtsstaat.
-Dat wil zeggen: ook de overheid is gebonden aan de wet en mag de grondrechten van burgers niet schenden.
-Een onafhankelijke rechterlijke macht vormt daarin een cruciale waarborg. Toch staat de democratie onder druk.
-Populistische bewegingen die de wil van 'het volk' claimen te vertegenwoordigen, zetten soms rechtsstaat en minderheden onder druk.
-Desinformatie via sociale media ondermijnt het vermogen van burgers om weloverwogen keuzes te maken.
-Politicologen spreken van een wereldwijde democratische recessie: meer landen bewegen richting autoritarisme.
-Tegelijkertijd laten andere samenlevingen zien dat burgers hardnekkig voor democratische waarden kunnen opkomen.
-Democratie is geen vanzelfsprekendheid, maar een verworvenheid die voortdurend actief verdedigd en onderhouden moet worden.
-Dat vereist betrokken burgers die bereid zijn zich te informeren, te debatteren en verantwoordelijkheid te nemen.
-Democratische vorming begint dan ook niet pas op het stembureau, maar al op de basisschool.`
-  }
+    sufficientMaxSeconds: 60,
+    // Het hoogste leesniveau. Alle soorten teksten snel, vloeiend en met begrip hardop voorlezen.
+    // Technische, wetenschappelijke of literaire teksten met abstracte en gespecialiseerde woordenschat.
+    sampleText: `Neurowetenschappers maken gebruik van functionele MRI-scans om vast te stellen welke hersengebieden actief zijn tijdens specifieke cognitieve taken.
+Het lijkt een objectieve methode, maar de interpretatie ervan is controversieel.
+Een veelgehoorde kritiek betreft het zogenoemde 'omgekeerde inferentieprobleem': uit het feit dat hersengebied X actief is bij taak Y, volgt niet noodzakelijk dat X specifiek verantwoordelijk is voor Y.
+Bovendien zijn de statistische methoden die vroeger werden gebruikt inmiddels deels achterhaald.
+De zogenoemde replicatiecrisis raakte ook de cognitieve neurowetenschap: een aanzienlijk deel van klassieke bevindingen bleek niet reproduceerbaar.
+Dit noopt tot methodologische bescheidenheid, maar ondermijnt de waarde van het vakgebied niet fundamenteel.
+Nieuwe technieken, zoals single-cell recording en connectoomanalyse, bieden veelbelovende aanvullingen.
+Het menselijk brein blijft vooralsnog het meest complexe systeem dat de wetenschap kent.`,
+  },
 ];
 
 export const AVI_LEVEL_ORDER: AviLevel[] = [
-  'M3', 'E3', 'M4', 'E4', 'M5', 'E5', 'M6', 'E6', 'M7', 'E7', 'Plus'
+  'Start', 'M3', 'E3', 'M4', 'E4', 'M5', 'E5', 'M6', 'E6', 'M7', 'E7', 'M8', 'E8', 'Plus'
 ];
 
 export function getAviConfig(level: AviLevel): AviLevelConfig {

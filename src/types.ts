@@ -1,5 +1,5 @@
-export type AviLevel = 'M3' | 'E3' | 'M4' | 'E4' | 'M5' | 'E5' | 'M6' | 'E6' | 'M7' | 'E7' | 'Plus';
-export type Classification = 'goed' | 'voldoende' | 'onvoldoende';
+export type AviLevel = 'Start' | 'M3' | 'E3' | 'M4' | 'E4' | 'M5' | 'E5' | 'M6' | 'E6' | 'M7' | 'E7' | 'M8' | 'E8' | 'Plus';
+export type Classification = 'beheersingsniveau' | 'instructieniveau' | 'frustratieniveau';
 
 export interface Student {
   id: string;
