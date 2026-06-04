@@ -1,7 +1,7 @@
 import { navigate } from '../hooks/useRouter';
 
 interface BottomNavProps {
-  activeTab: 'students' | 'new-test';
+  activeTab: 'students' | 'teachers';
 }
 
 export function BottomNav({ activeTab }: BottomNavProps) {
@@ -10,9 +10,7 @@ export function BottomNav({ activeTab }: BottomNavProps) {
       <button
         onClick={() => navigate('/')}
         className={`flex-1 flex flex-col items-center justify-center py-3 min-h-[56px] text-sm font-medium transition-colors ${
-          activeTab === 'students'
-            ? 'text-blue-600 border-t-2 border-blue-600'
-            : 'text-gray-500'
+          activeTab === 'students' ? 'text-blue-600 border-t-2 border-blue-600' : 'text-gray-500'
         }`}
       >
         <svg className="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -21,17 +19,15 @@ export function BottomNav({ activeTab }: BottomNavProps) {
         Leerlingen
       </button>
       <button
-        onClick={() => navigate('/student/new')}
+        onClick={() => navigate('/teachers')}
         className={`flex-1 flex flex-col items-center justify-center py-3 min-h-[56px] text-sm font-medium transition-colors ${
-          activeTab === 'new-test'
-            ? 'text-blue-600 border-t-2 border-blue-600'
-            : 'text-gray-500'
+          activeTab === 'teachers' ? 'text-blue-600 border-t-2 border-blue-600' : 'text-gray-500'
         }`}
       >
         <svg className="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
         </svg>
-        Nieuwe leerling
+        Leraren
       </button>
     </nav>
   );

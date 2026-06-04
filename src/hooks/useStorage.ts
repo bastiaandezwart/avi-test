@@ -31,3 +31,7 @@ export function useStudents() {
 export function useResults() {
   return useLocalStorage<import('../types').TestResult[]>('avi_results', []);
 }
+
+export function useTeachers() {
+  return useLocalStorage<import('../types').Teacher[]>('avi_teachers', []);
+}

@@ -1,12 +1,21 @@
 export type AviLevel = 'Start' | 'M3' | 'E3' | 'M4' | 'E4' | 'M5' | 'E5' | 'M6' | 'E6' | 'M7' | 'E7' | 'M8' | 'E8' | 'Plus';
 export type Classification = 'beheersingsniveau' | 'instructieniveau' | 'frustratieniveau';
 
+export interface Teacher {
+  id: string;
+  name: string;
+  photo?: string;
+  createdAt: string;
+}
+
 export interface Student {
   id: string;
   name: string;
   group?: string;
   birthDate?: string;
   photo?: string;
+  primaryTeacherId?: string;
+  additionalTeacherIds?: string[];
   createdAt: string;
 }
 

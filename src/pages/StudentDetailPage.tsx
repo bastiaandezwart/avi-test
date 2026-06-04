@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Student, TestResult } from '../types';
 import { navigate } from '../hooks/useRouter';
 import { ClassificationBadge } from '../components/ClassificationBadge';
+import { Avatar } from '../components/Avatar';
 
 interface StudentDetailPageProps {
   student: Student;
@@ -42,31 +43,6 @@ function exportCSV(student: Student, results: TestResult[]) {
   URL.revokeObjectURL(url);
 }
 
-function StudentAvatar({ student, size = 'md' }: { student: Student; size?: 'sm' | 'md' | 'lg' }) {
-  const initials = student.name
-    .split(' ')
-    .map(w => w[0])
-    .slice(0, 2)
-    .join('')
-    .toUpperCase();
-
-  const sizeClass = size === 'sm' ? 'w-9 h-9 text-sm' : size === 'lg' ? 'w-16 h-16 text-2xl' : 'w-11 h-11 text-base';
-
-  if (student.photo) {
-    return (
-      <img
-        src={student.photo}
-        alt={student.name}
-        className={`${sizeClass} rounded-full object-cover shrink-0`}
-      />
-    );
-  }
-  return (
-    <div className={`${sizeClass} rounded-full bg-blue-200 flex items-center justify-center shrink-0`}>
-      <span className="font-bold text-blue-700">{initials}</span>
-    </div>
-  );
-}
 
 export function StudentDetailPage({ student, results, onDeleteStudent, onDeleteResult }: StudentDetailPageProps) {
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
@@ -106,7 +82,7 @@ export function StudentDetailPage({ student, results, onDeleteStudent, onDeleteR
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
         </button>
-        <StudentAvatar student={student} size="md" />
+        <Avatar name={student.name} photo={student.photo} size="md" />
         <div className="flex-1 min-w-0">
           <h1 className="text-xl font-bold truncate">{student.name}</h1>
           {student.group && <p className="text-blue-100 text-sm">{student.group}</p>}

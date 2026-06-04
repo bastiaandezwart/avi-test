@@ -1,6 +1,6 @@
 import { useHash, parseRoute, navigate } from './hooks/useRouter';
-import { useStudents, useResults } from './hooks/useStorage';
-import { Student, TestResult, AviLevel, Classification } from './types';
+import { useStudents, useResults, useTeachers } from './hooks/useStorage';
+import { Student, TestResult, AviLevel, Classification, Teacher } from './types';
 import { AVI_LEVEL_ORDER } from './data/avi';
 
 import { HomePage } from './pages/HomePage';
@@ -9,6 +9,9 @@ import { StudentDetailPage } from './pages/StudentDetailPage';
 import { TestLevelSelectPage } from './pages/TestLevelSelectPage';
 import { TestScreenPage } from './pages/TestScreenPage';
 import { TestResultPage } from './pages/TestResultPage';
+import { TeachersPage } from './pages/TeachersPage';
+import { TeacherFormPage } from './pages/TeacherFormPage';
+import { TeacherDetailPage } from './pages/TeacherDetailPage';
 
 function generateId(): string {
   return Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
@@ -19,6 +22,7 @@ export default function App() {
   const route = parseRoute(hash);
   const [students, setStudents] = useStudents();
   const [results, setResults] = useResults();
+  const [teachers, setTeachers] = useTeachers();
 
   const handleSaveStudent = (student: Student) => {
     setStudents(prev => {
@@ -46,11 +50,7 @@ export default function App() {
     notes?: string;
   }): string => {
     const id = generateId();
-    const result: TestResult = {
-      id,
-      date: new Date().toISOString(),
-      ...data,
-    };
+    const result: TestResult = { id, date: new Date().toISOString(), ...data };
     setResults(prev => [...prev, result]);
     return id;
   };
@@ -59,39 +59,71 @@ export default function App() {
     setResults(prev => prev.filter(r => r.id !== resultId));
   };
 
-  // Route matching
+  const handleSaveTeacher = (teacher: Teacher) => {
+    setTeachers(prev => {
+      const existing = prev.findIndex(t => t.id === teacher.id);
+      if (existing >= 0) {
+        const updated = [...prev];
+        updated[existing] = teacher;
+        return updated;
+      }
+      return [...prev, teacher];
+    });
+  };
+
+  const handleDeleteTeacher = (id: string) => {
+    setTeachers(prev => prev.filter(t => t.id !== id));
+    setStudents(prev => prev.map(s => ({
+      ...s,
+      primaryTeacherId: s.primaryTeacherId === id ? undefined : s.primaryTeacherId,
+      additionalTeacherIds: s.additionalTeacherIds?.filter(tid => tid !== id),
+    })));
+  };
+
   if (route.page === 'home') {
-    return <HomePage students={students} results={results} />;
+    return <HomePage students={students} results={results} teachers={teachers} />;
+  }
+
+  if (route.page === 'teachers') {
+    return <TeachersPage teachers={teachers} students={students} />;
+  }
+
+  if (route.page === 'teacher-new') {
+    return <TeacherFormPage onSave={handleSaveTeacher} />;
+  }
+
+  if (route.page === 'teacher-edit') {
+    const teacher = teachers.find(t => t.id === route.teacherId);
+    if (!teacher) { navigate('/teachers'); return null; }
+    return <TeacherFormPage teacher={teacher} onSave={handleSaveTeacher} />;
+  }
+
+  if (route.page === 'teacher-detail') {
+    const teacher = teachers.find(t => t.id === route.teacherId);
+    if (!teacher) { navigate('/teachers'); return null; }
+    return (
+      <TeacherDetailPage
+        teacher={teacher}
+        students={students}
+        results={results}
+        onDeleteTeacher={handleDeleteTeacher}
+      />
+    );
   }
 
   if (route.page === 'student-new') {
-    return (
-      <StudentFormPage
-        onSave={handleSaveStudent}
-      />
-    );
+    return <StudentFormPage teachers={teachers} onSave={handleSaveStudent} />;
   }
 
   if (route.page === 'student-edit') {
     const student = students.find(s => s.id === route.studentId);
-    if (!student) {
-      navigate('/');
-      return null;
-    }
-    return (
-      <StudentFormPage
-        student={student}
-        onSave={handleSaveStudent}
-      />
-    );
+    if (!student) { navigate('/'); return null; }
+    return <StudentFormPage student={student} teachers={teachers} onSave={handleSaveStudent} />;
   }
 
   if (route.page === 'student-detail') {
     const student = students.find(s => s.id === route.studentId);
-    if (!student) {
-      navigate('/');
-      return null;
-    }
+    if (!student) { navigate('/'); return null; }
     return (
       <StudentDetailPage
         student={student}
@@ -104,25 +136,13 @@ export default function App() {
 
   if (route.page === 'test-level-select') {
     const student = students.find(s => s.id === route.studentId);
-    if (!student) {
-      navigate('/');
-      return null;
-    }
-    return (
-      <TestLevelSelectPage
-        student={student}
-        results={results}
-      />
-    );
+    if (!student) { navigate('/'); return null; }
+    return <TestLevelSelectPage student={student} results={results} />;
   }
 
   if (route.page === 'test-screen') {
     const student = students.find(s => s.id === route.studentId);
-    if (!student) {
-      navigate('/');
-      return null;
-    }
-    // Validate level
+    if (!student) { navigate('/'); return null; }
     if (!AVI_LEVEL_ORDER.includes(route.level as AviLevel)) {
       navigate(`/student/${route.studentId}/test`);
       return null;
@@ -138,15 +158,9 @@ export default function App() {
 
   if (route.page === 'test-result') {
     const result = results.find(r => r.id === route.resultId);
-    if (!result) {
-      navigate('/');
-      return null;
-    }
+    if (!result) { navigate('/'); return null; }
     const student = students.find(s => s.id === result.studentId);
-    if (!student) {
-      navigate('/');
-      return null;
-    }
+    if (!student) { navigate('/'); return null; }
     return (
       <TestResultPage
         result={result}
@@ -156,16 +170,12 @@ export default function App() {
     );
   }
 
-  // 404
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
       <div className="text-center p-6">
         <h1 className="text-4xl font-black text-gray-300 mb-2">404</h1>
         <p className="text-gray-500 mb-4">Pagina niet gevonden</p>
-        <button
-          onClick={() => navigate('/')}
-          className="bg-blue-600 text-white px-6 py-3 rounded-xl font-semibold"
-        >
+        <button onClick={() => navigate('/')} className="bg-blue-600 text-white px-6 py-3 rounded-xl font-semibold">
           Ga naar home
         </button>
       </div>

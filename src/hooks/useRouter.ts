@@ -2,13 +2,11 @@ import { useState, useEffect } from 'react';
 
 export function useHash(): string {
   const [hash, setHash] = useState(() => window.location.hash || '#/');
-
   useEffect(() => {
     const handleHashChange = () => setHash(window.location.hash || '#/');
     window.addEventListener('hashchange', handleHashChange);
     return () => window.removeEventListener('hashchange', handleHashChange);
   }, []);
-
   return hash;
 }
 
@@ -18,6 +16,10 @@ export function navigate(path: string) {
 
 export type Route =
   | { page: 'home' }
+  | { page: 'teachers' }
+  | { page: 'teacher-new' }
+  | { page: 'teacher-edit'; teacherId: string }
+  | { page: 'teacher-detail'; teacherId: string }
   | { page: 'student-new' }
   | { page: 'student-edit'; studentId: string }
   | { page: 'student-detail'; studentId: string }
@@ -31,6 +33,14 @@ export function parseRoute(hash: string): Route {
   const parts = path.split('/').filter(Boolean);
 
   if (parts.length === 0 || path === '/') return { page: 'home' };
+
+  if (parts[0] === 'teachers') return { page: 'teachers' };
+
+  if (parts[0] === 'teacher') {
+    if (parts[1] === 'new') return { page: 'teacher-new' };
+    if (parts.length >= 3 && parts[2] === 'edit') return { page: 'teacher-edit', teacherId: parts[1] };
+    if (parts.length === 2) return { page: 'teacher-detail', teacherId: parts[1] };
+  }
 
   if (parts[0] === 'student') {
     if (parts[1] === 'new') return { page: 'student-new' };
