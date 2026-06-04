@@ -64,7 +64,17 @@ export function HomePage({ students, results }: HomePageProps) {
                     onClick={() => navigate(`/student/${student.id}`)}
                     className="w-full bg-white rounded-xl shadow-sm border border-gray-100 p-4 text-left active:bg-gray-50 transition-colors min-h-[72px]"
                   >
-                    <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      {student.photo ? (
+                        <img src={student.photo} alt={student.name} className="w-11 h-11 rounded-full object-cover shrink-0" />
+                      ) : (
+                        <div className="w-11 h-11 rounded-full bg-blue-100 flex items-center justify-center shrink-0">
+                          <span className="text-sm font-bold text-blue-500">
+                            {student.name.split(' ').map(w => w[0]).slice(0, 2).join('').toUpperCase()}
+                          </span>
+                        </div>
+                      )}
+                    <div className="flex flex-1 min-w-0 items-center justify-between">
                       <div className="flex-1 min-w-0">
                         <p className="font-semibold text-gray-900 text-base truncate">{student.name}</p>
                         <p className="text-sm text-gray-500 mt-0.5">{student.group || 'Geen groep'}</p>
@@ -82,6 +92,7 @@ export function HomePage({ students, results }: HomePageProps) {
                           <p className="text-sm text-gray-400 italic">Geen toetsen</p>
                         )}
                       </div>
+                    </div>
                     </div>
                   </button>
                 );

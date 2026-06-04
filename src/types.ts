@@ -6,6 +6,7 @@ export interface Student {
   name: string;
   group?: string;
   birthDate?: string;
+  photo?: string;
   createdAt: string;
 }
 

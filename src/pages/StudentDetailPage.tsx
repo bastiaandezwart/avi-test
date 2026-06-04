@@ -7,7 +7,7 @@ interface StudentDetailPageProps {
   student: Student;
   results: TestResult[];
   onDeleteStudent: (id: string) => void;
-  onDeleteResult?: (id: string) => void;
+  onDeleteResult: (id: string) => void;
 }
 
 function formatSeconds(seconds: number): string {
@@ -27,11 +27,7 @@ function exportCSV(student: Student, results: TestResult[]) {
     .filter(r => r.studentId === student.id)
     .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
     .map(r => {
-      const speed = calcReadingSpeed(
-        // approximate word count from level - we just use time
-        100,
-        r.readingTimeSeconds
-      );
+      const speed = calcReadingSpeed(100, r.readingTimeSeconds);
       const date = new Date(r.date).toLocaleDateString('nl-NL');
       const notes = r.notes ? `"${r.notes.replace(/"/g, '""')}"` : '';
       return `${date},${r.aviLevel},${r.errors},${r.readingTimeSeconds},${speed},${r.classification},${notes}`;
@@ -46,8 +42,35 @@ function exportCSV(student: Student, results: TestResult[]) {
   URL.revokeObjectURL(url);
 }
 
-export function StudentDetailPage({ student, results, onDeleteStudent }: StudentDetailPageProps) {
+function StudentAvatar({ student, size = 'md' }: { student: Student; size?: 'sm' | 'md' | 'lg' }) {
+  const initials = student.name
+    .split(' ')
+    .map(w => w[0])
+    .slice(0, 2)
+    .join('')
+    .toUpperCase();
+
+  const sizeClass = size === 'sm' ? 'w-9 h-9 text-sm' : size === 'lg' ? 'w-16 h-16 text-2xl' : 'w-11 h-11 text-base';
+
+  if (student.photo) {
+    return (
+      <img
+        src={student.photo}
+        alt={student.name}
+        className={`${sizeClass} rounded-full object-cover shrink-0`}
+      />
+    );
+  }
+  return (
+    <div className={`${sizeClass} rounded-full bg-blue-200 flex items-center justify-center shrink-0`}>
+      <span className="font-bold text-blue-700">{initials}</span>
+    </div>
+  );
+}
+
+export function StudentDetailPage({ student, results, onDeleteStudent, onDeleteResult }: StudentDetailPageProps) {
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [confirmDeleteResultId, setConfirmDeleteResultId] = useState<string | null>(null);
 
   const studentResults = results
     .filter(r => r.studentId === student.id)
@@ -56,6 +79,11 @@ export function StudentDetailPage({ student, results, onDeleteStudent }: Student
   const handleDelete = () => {
     onDeleteStudent(student.id);
     navigate('/');
+  };
+
+  const handleDeleteResult = (id: string) => {
+    onDeleteResult(id);
+    setConfirmDeleteResultId(null);
   };
 
   const formatDate = (dateStr: string) => {
@@ -78,6 +106,7 @@ export function StudentDetailPage({ student, results, onDeleteStudent }: Student
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
         </button>
+        <StudentAvatar student={student} size="md" />
         <div className="flex-1 min-w-0">
           <h1 className="text-xl font-bold truncate">{student.name}</h1>
           {student.group && <p className="text-blue-100 text-sm">{student.group}</p>}
@@ -162,20 +191,56 @@ export function StudentDetailPage({ student, results, onDeleteStudent }: Student
                       <th className="px-3 py-2.5 text-center text-xs font-semibold text-gray-500 uppercase tracking-wide">Fouten</th>
                       <th className="px-3 py-2.5 text-center text-xs font-semibold text-gray-500 uppercase tracking-wide">Tijd</th>
                       <th className="px-3 py-2.5 text-left text-xs font-semibold text-gray-500 uppercase tracking-wide">Score</th>
+                      <th className="px-2 py-2.5 w-8"></th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-50">
-                    {studentResults.map(result => (
-                      <tr key={result.id} className="hover:bg-gray-50">
-                        <td className="px-3 py-3 text-gray-600 whitespace-nowrap">{formatDate(result.date)}</td>
-                        <td className="px-3 py-3 font-semibold text-gray-800">{result.aviLevel}</td>
-                        <td className="px-3 py-3 text-center text-gray-700">{result.errors}</td>
-                        <td className="px-3 py-3 text-center text-gray-700 whitespace-nowrap">{formatSeconds(result.readingTimeSeconds)}</td>
-                        <td className="px-3 py-3">
-                          <ClassificationBadge classification={result.classification} size="sm" />
-                        </td>
-                      </tr>
-                    ))}
+                    {studentResults.map(result =>
+                      confirmDeleteResultId === result.id ? (
+                        <tr key={result.id} className="bg-red-50">
+                          <td colSpan={6} className="px-3 py-2.5">
+                            <div className="flex items-center justify-between gap-2">
+                              <span className="text-red-700 text-sm font-medium">Score verwijderen?</span>
+                              <div className="flex gap-2">
+                                <button
+                                  onClick={() => setConfirmDeleteResultId(null)}
+                                  className="text-xs px-3 py-1.5 border border-gray-300 rounded-lg bg-white text-gray-700 active:bg-gray-100 min-h-[36px]"
+                                >
+                                  Annuleren
+                                </button>
+                                <button
+                                  onClick={() => handleDeleteResult(result.id)}
+                                  className="text-xs px-3 py-1.5 bg-red-600 text-white rounded-lg active:bg-red-700 font-semibold min-h-[36px]"
+                                >
+                                  Verwijderen
+                                </button>
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                      ) : (
+                        <tr key={result.id} className="hover:bg-gray-50">
+                          <td className="px-3 py-3 text-gray-600 whitespace-nowrap">{formatDate(result.date)}</td>
+                          <td className="px-3 py-3 font-semibold text-gray-800">{result.aviLevel}</td>
+                          <td className="px-3 py-3 text-center text-gray-700">{result.errors}</td>
+                          <td className="px-3 py-3 text-center text-gray-700 whitespace-nowrap">{formatSeconds(result.readingTimeSeconds)}</td>
+                          <td className="px-3 py-3">
+                            <ClassificationBadge classification={result.classification} size="sm" />
+                          </td>
+                          <td className="px-2 py-3 text-right">
+                            <button
+                              onClick={() => setConfirmDeleteResultId(result.id)}
+                              className="p-1.5 text-gray-300 hover:text-red-500 active:text-red-700 rounded-lg transition-colors"
+                              aria-label="Score verwijderen"
+                            >
+                              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                              </svg>
+                            </button>
+                          </td>
+                        </tr>
+                      )
+                    )}
                   </tbody>
                 </table>
               </div>
@@ -183,7 +248,7 @@ export function StudentDetailPage({ student, results, onDeleteStudent }: Student
           )}
         </div>
 
-        {/* Delete button */}
+        {/* Delete student button */}
         <div className="pt-4">
           {!showDeleteConfirm ? (
             <button
