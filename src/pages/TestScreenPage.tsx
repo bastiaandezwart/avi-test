@@ -45,6 +45,7 @@ export function TestScreenPage({ student, level, onSaveResult }: TestScreenPageP
   const [observations, setObservations] = useState<ErrorObservations>({});
   const [started, setStarted] = useState(false);
   const [showText, setShowText] = useState(false);
+  const [textIndex, setTextIndex] = useState(0);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const stopTimer = useCallback(() => {
@@ -95,6 +96,23 @@ export function TestScreenPage({ student, level, onSaveResult }: TestScreenPageP
 
   const handleAddError = () => setErrors(prev => prev + 1);
   const handleRemoveError = () => setErrors(prev => Math.max(0, prev - 1));
+
+  const handlePrint = () => {
+    const text = config.sampleTexts[textIndex];
+    const escaped = text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    const styleEl = document.createElement('style');
+    styleEl.id = '__avi_print_style__';
+    styleEl.textContent = `@media print { body > *:not(#__avi_print_content__) { display: none !important; } #__avi_print_content__ { display: block !important; position: fixed; top: 0; left: 0; width: 100%; font-family: Arial, sans-serif; padding: 2cm; box-sizing: border-box; } }`;
+    const contentEl = document.createElement('div');
+    contentEl.id = '__avi_print_content__';
+    contentEl.style.display = 'none';
+    contentEl.innerHTML = `<div style="font-size:11pt;color:#555;margin-bottom:16pt">AVI ${level} · ${config.schoolYear} · ${config.wordCount} woorden · Tekst ${textIndex + 1} van ${config.sampleTexts.length}</div><div style="font-size:18pt;line-height:1.9;white-space:pre-wrap">${escaped}</div><div style="margin-top:24pt;font-size:9pt;color:#aaa">Voorbeeldtekst ter referentie — gebruik voor officiële toetsing de originele Cito AVI-kaarten.</div>`;
+    document.head.appendChild(styleEl);
+    document.body.appendChild(contentEl);
+    window.print();
+    document.head.removeChild(styleEl);
+    document.body.removeChild(contentEl);
+  };
 
   const timerColorClass = elapsed > config.sufficientMaxSeconds
     ? 'text-red-600'
@@ -210,7 +228,25 @@ export function TestScreenPage({ student, level, onSaveResult }: TestScreenPageP
               <div className="mt-3 bg-yellow-50 border border-yellow-200 rounded-lg p-2 mb-3">
                 <p className="text-xs text-yellow-800">⚠ Dit is een voorbeeldtekst ter referentie. Gebruik voor een officiële toets de originele Cito AVI-kaarten.</p>
               </div>
-              <p className="text-base leading-relaxed text-gray-800 whitespace-pre-line">{config.sampleText}</p>
+              <p className="text-base leading-relaxed text-gray-800 whitespace-pre-line">{config.sampleTexts[textIndex]}</p>
+              <div className="mt-4 flex gap-2">
+                {config.sampleTexts.length > 1 && (
+                  <button
+                    type="button"
+                    onClick={() => setTextIndex(i => (i + 1) % config.sampleTexts.length)}
+                    className="flex-1 bg-gray-100 border border-gray-200 text-gray-600 font-medium py-2.5 px-3 rounded-xl text-sm active:bg-gray-200 transition-colors"
+                  >
+                    Andere tekst ({textIndex + 1}/{config.sampleTexts.length})
+                  </button>
+                )}
+                <button
+                  type="button"
+                  onClick={handlePrint}
+                  className="flex-1 bg-blue-50 border border-blue-200 text-blue-700 font-medium py-2.5 px-3 rounded-xl text-sm active:bg-blue-100 transition-colors"
+                >
+                  Afdrukken
+                </button>
+              </div>
             </div>
           )}
         </div>
