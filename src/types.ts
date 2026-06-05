@@ -47,6 +47,6 @@ export interface AviLevelConfig {
   goodMaxSeconds: number;
   sufficientMaxErrors: number;
   sufficientMaxSeconds: number;
-  sampleText: string;
+  sampleTexts: string[];
   schoolYear: string;
 }
