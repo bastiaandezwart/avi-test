@@ -168,7 +168,7 @@ export default function App() {
 
   if (route.page === 'test-result') {
     const result = results.find(r => r.id === route.resultId);
-    if (!result) { navigate('/'); return null; }
+    if (!result || result.deletedAt) { navigate('/'); return null; }
     const student = students.find(s => s.id === result.studentId);
     if (!student) { navigate('/'); return null; }
     return (
