@@ -241,48 +241,6 @@ Tegelijkertijd waarschuwen anderen tegen een al te simplistische zwart-witverdel
 De werkelijkheid was genuanceerd, en dat vereist ook een genuanceerde herinnering.`,
   },
   {
-    level: 'M8',
-    label: 'M8 - Groep 8 midden',
-    schoolYear: 'Groep 8 (midden)',
-    wordCount: 116,
-    goodMaxErrors: 3,
-    goodMaxSeconds: 47,
-    sufficientMaxErrors: 6,
-    sufficientMaxSeconds: 67,
-    // Vlot lezen van complexe, informatieve teksten. Complexe interpunctie, vreemde woorden.
-    // Vergelijkbaar met krantentaal.
-    sampleText: `De Nederlandse woningmarkt staat al jaren onder druk, maar de problemen worden steeds urgenter.
-Het aantal beschikbare huurwoningen in de vrije sector daalt, terwijl de vraag gestaag toeneemt.
-Starters op de woningmarkt zijn de dupe: hun inkomen stijgt niet evenredig met de huurprijzen.
-Gemeenten zoeken naar creatieve oplossingen. Zo experimenteren Amsterdam en Utrecht met zogenoemde 'woonloten', waarbij inschrijftijd geen rol meer speelt.
-Critici vrezen echter dat dit systeem willekeur in de hand werkt en juist kwetsbare groepen benadeelt.
-Rijksbouwmeester Floris Alkemade pleit voor een fundamentele herziening van het bouwbeleid.
-'We bouwen te weinig, te traag en op de verkeerde plekken,' zei hij onlangs in een interview.
-Zonder structurele ingrepen dreigt de kloof tussen huurder en eigenaar verder te vergroten.
-Dat raakt niet alleen individuen, maar de sociale cohesie van wijken en steden als geheel.`,
-  },
-  {
-    level: 'E8',
-    label: 'E8 - Groep 8 einde',
-    schoolYear: 'Groep 8 (einde)',
-    wordCount: 118,
-    goodMaxErrors: 3,
-    goodMaxSeconds: 44,
-    sufficientMaxErrors: 6,
-    sufficientMaxSeconds: 64,
-    // Complexe, informatieve teksten op volwassen niveau (tijdschriften, vakbladen).
-    // Abstracte woordenschat, vreemde woorden, gevarieerde zinsstructuur.
-    sampleText: `De filosofie van de taal vraagt zich al eeuwenlang af in welke verhouding woorden staan tot de werkelijkheid.
-Ferdinand de Saussure introduceerde het onderscheid tussen het taalteken als zodanig en datgene waarnaar het verwijst.
-Dit lijkt abstract, maar heeft verreikende gevolgen voor hoe we naar communicatie kijken.
-Als woorden willekeurige symbolen zijn zonder intrinsieke band met de werkelijkheid, dan is betekenis altijd contextafhankelijk.
-Ludwig Wittgenstein ging nog een stap verder: 'De grenzen van mijn taal zijn de grenzen van mijn wereld.'
-Daarmee suggereerde hij dat taal niet alleen de werkelijkheid beschrijft, maar ook mede vormgeeft.
-In een tijdperk van 'alternatieve feiten' en politieke framing is deze gedachte actueler dan ooit.
-Wie de taal beheerst, beheerst in zekere mate ook de perceptie van de werkelijkheid.
-Mediawijsheid is daarmee niet alleen een educatief begrip geworden, maar een democratische noodzaak.`,
-  },
-  {
     level: 'Plus',
     label: 'Plus - Boven Groep 8',
     schoolYear: 'Boven Groep 8',
@@ -305,7 +263,7 @@ Het menselijk brein blijft vooralsnog het meest complexe systeem dat de wetensch
 ];
 
 export const AVI_LEVEL_ORDER: AviLevel[] = [
-  'Start', 'M3', 'E3', 'M4', 'E4', 'M5', 'E5', 'M6', 'E6', 'M7', 'E7', 'M8', 'E8', 'Plus'
+  'Start', 'M3', 'E3', 'M4', 'E4', 'M5', 'E5', 'M6', 'E6', 'M7', 'E7', 'Plus'
 ];
 
 export function getAviConfig(level: AviLevel): AviLevelConfig {

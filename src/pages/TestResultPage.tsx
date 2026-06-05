@@ -163,6 +163,18 @@ export function TestResultPage({ result, student, onDeleteResult }: TestResultPa
           </div>
         </div>
 
+        {result.observations && Object.values(result.observations).some(Boolean) && (
+          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
+            <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-3">Leesgedrag</h2>
+            <div className="flex flex-wrap gap-2">
+              {result.observations.spellingReading && <span className="bg-blue-50 text-blue-700 text-sm px-3 py-1 rounded-lg border border-blue-200">Spellend lezen</span>}
+              {result.observations.skippedWords && <span className="bg-blue-50 text-blue-700 text-sm px-3 py-1 rounded-lg border border-blue-200">Woord overgeslagen</span>}
+              {result.observations.mispronunciation && <span className="bg-blue-50 text-blue-700 text-sm px-3 py-1 rounded-lg border border-blue-200">Verklanking</span>}
+              {result.observations.selfCorrections && <span className="bg-blue-50 text-blue-700 text-sm px-3 py-1 rounded-lg border border-blue-200">Zelfcorrectie</span>}
+            </div>
+          </div>
+        )}
+
         {result.notes && (
           <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
             <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-2">Notities</h2>

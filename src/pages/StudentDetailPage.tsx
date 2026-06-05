@@ -3,6 +3,7 @@ import { Student, TestResult } from '../types';
 import { navigate } from '../hooks/useRouter';
 import { ClassificationBadge } from '../components/ClassificationBadge';
 import { Avatar } from '../components/Avatar';
+import { ProgressChart } from '../components/ProgressChart';
 
 interface StudentDetailPageProps {
   student: Student;
@@ -114,6 +115,19 @@ export function StudentDetailPage({ student, results, onDeleteStudent, onDeleteR
               </div>
             )}
           </div>
+        </div>
+
+        {/* Progress chart */}
+        {activeResults.length >= 2 && (
+          <ProgressChart results={activeResults} />
+        )}
+
+        {/* M/E measurement hint */}
+        <div className="bg-blue-50 border border-blue-100 rounded-xl px-4 py-2.5 flex items-center gap-2">
+          <svg className="w-4 h-4 text-blue-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+          </svg>
+          <p className="text-xs text-blue-700">AVI wordt 2× per schooljaar afgenomen: <strong>M-meting</strong> (januari) en <strong>E-meting</strong> (juni)</p>
         </div>
 
         {/* Start test button */}

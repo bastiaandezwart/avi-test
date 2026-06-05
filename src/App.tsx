@@ -1,6 +1,6 @@
 import { useHash, parseRoute, navigate } from './hooks/useRouter';
 import { useStudents, useResults, useTeachers } from './hooks/useStorage';
-import { Student, TestResult, AviLevel, Classification, Teacher } from './types';
+import { Student, TestResult, AviLevel, Classification, Teacher, ErrorObservations } from './types';
 import { AVI_LEVEL_ORDER } from './data/avi';
 
 import { HomePage } from './pages/HomePage';
@@ -48,6 +48,7 @@ export default function App() {
     readingTimeSeconds: number;
     classification: Classification;
     notes?: string;
+    observations?: ErrorObservations;
   }): string => {
     const id = generateId();
     const result: TestResult = { id, date: new Date().toISOString(), ...data };

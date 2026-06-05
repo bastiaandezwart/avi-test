@@ -1,5 +1,12 @@
-export type AviLevel = 'Start' | 'M3' | 'E3' | 'M4' | 'E4' | 'M5' | 'E5' | 'M6' | 'E6' | 'M7' | 'E7' | 'M8' | 'E8' | 'Plus';
+export type AviLevel = 'Start' | 'M3' | 'E3' | 'M4' | 'E4' | 'M5' | 'E5' | 'M6' | 'E6' | 'M7' | 'E7' | 'Plus';
 export type Classification = 'beheersingsniveau' | 'instructieniveau' | 'frustratieniveau';
+
+export interface ErrorObservations {
+  spellingReading?: boolean;
+  skippedWords?: boolean;
+  mispronunciation?: boolean;
+  selfCorrections?: boolean;
+}
 
 export interface Teacher {
   id: string;
@@ -28,6 +35,7 @@ export interface TestResult {
   readingTimeSeconds: number;
   classification: Classification;
   notes?: string;
+  observations?: ErrorObservations;
   deletedAt?: string;
 }
 
