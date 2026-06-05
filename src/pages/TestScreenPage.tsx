@@ -47,6 +47,7 @@ export function TestScreenPage({ student, level, onSaveResult }: TestScreenPageP
   const [showText, setShowText] = useState(false);
   const [textIndex, setTextIndex] = useState(0);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const submittingRef = useRef(false);
 
   const stopTimer = useCallback(() => {
     if (intervalRef.current) {
@@ -75,6 +76,8 @@ export function TestScreenPage({ student, level, onSaveResult }: TestScreenPageP
   };
 
   const handleStop = () => {
+    if (submittingRef.current) return;
+    submittingRef.current = true;
     stopTimer();
     const classification = classify(
       errors, elapsed,
@@ -109,9 +112,17 @@ export function TestScreenPage({ student, level, onSaveResult }: TestScreenPageP
     contentEl.innerHTML = `<div style="font-size:11pt;color:#555;margin-bottom:16pt">AVI ${level} · ${config.schoolYear} · ${config.wordCount} woorden · Tekst ${textIndex + 1} van ${config.sampleTexts.length}</div><div style="font-size:18pt;line-height:1.9;white-space:pre-wrap">${escaped}</div><div style="margin-top:24pt;font-size:9pt;color:#aaa">Voorbeeldtekst ter referentie — gebruik voor officiële toetsing de originele Cito AVI-kaarten.</div>`;
     document.head.appendChild(styleEl);
     document.body.appendChild(contentEl);
-    window.print();
-    document.head.removeChild(styleEl);
-    document.body.removeChild(contentEl);
+    const cleanup = () => {
+      if (styleEl.parentNode) document.head.removeChild(styleEl);
+      if (contentEl.parentNode) document.body.removeChild(contentEl);
+      window.removeEventListener('afterprint', cleanup);
+    };
+    window.addEventListener('afterprint', cleanup);
+    try {
+      window.print();
+    } catch {
+      cleanup();
+    }
   };
 
   const timerColorClass = elapsed > config.sufficientMaxSeconds

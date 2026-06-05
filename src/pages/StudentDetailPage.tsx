@@ -16,7 +16,7 @@ interface StudentDetailPageProps {
 function formatSeconds(seconds: number): string {
   const m = Math.floor(seconds / 60);
   const s = seconds % 60;
-  return `${m}:${s.toString().padStart(2, '0')}`;
+  return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
 }
 
 function exportCSV(student: Student, results: TestResult[]) {
@@ -93,33 +93,55 @@ export function StudentDetailPage({ student, results, onDeleteStudent, onDeleteR
       </header>
 
       <div className="px-4 py-4 space-y-4">
-        {/* Student info card */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4">
-          <div className="grid grid-cols-2 gap-3 text-sm">
-            {student.birthDate && (
+        {/* Profile + progress: side by side when chart is available */}
+        {activeResults.length >= 2 ? (
+          <div className="grid grid-cols-2 gap-3 items-start">
+            <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 space-y-4">
               <div>
-                <p className="text-gray-500">Geboortedatum</p>
-                <p className="font-medium text-gray-800">
-                  {new Date(student.birthDate).toLocaleDateString('nl-NL')}
-                </p>
+                <p className="text-xs text-gray-500 uppercase tracking-wide">Toetsen</p>
+                <p className="text-4xl font-black text-gray-900 leading-none mt-1">{activeResults.length}</p>
               </div>
-            )}
-            <div>
-              <p className="text-gray-500">Toetsen gedaan</p>
-              <p className="font-medium text-gray-800">{activeResults.length}</p>
+              <div>
+                <p className="text-xs text-gray-500 uppercase tracking-wide">Laatste niveau</p>
+                <p className="text-2xl font-black text-gray-900 leading-none mt-1">{activeResults[0].aviLevel}</p>
+                <div className="mt-2">
+                  <ClassificationBadge classification={activeResults[0].classification} size="sm" />
+                </div>
+              </div>
+              {student.birthDate && (
+                <div>
+                  <p className="text-xs text-gray-500 uppercase tracking-wide">Geboortedatum</p>
+                  <p className="text-xs font-medium text-gray-700 mt-1">
+                    {new Date(student.birthDate).toLocaleDateString('nl-NL')}
+                  </p>
+                </div>
+              )}
             </div>
-            {activeResults.length > 0 && (
-              <div>
-                <p className="text-gray-500">Laatste niveau</p>
-                <p className="font-semibold text-gray-800">{activeResults[0].aviLevel}</p>
-              </div>
-            )}
+            <ProgressChart results={activeResults} />
           </div>
-        </div>
-
-        {/* Progress chart */}
-        {activeResults.length >= 2 && (
-          <ProgressChart results={activeResults} />
+        ) : (
+          <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4">
+            <div className="grid grid-cols-2 gap-3 text-sm">
+              {student.birthDate && (
+                <div>
+                  <p className="text-gray-500">Geboortedatum</p>
+                  <p className="font-medium text-gray-800">
+                    {new Date(student.birthDate).toLocaleDateString('nl-NL')}
+                  </p>
+                </div>
+              )}
+              <div>
+                <p className="text-gray-500">Toetsen gedaan</p>
+                <p className="font-medium text-gray-800">{activeResults.length}</p>
+              </div>
+              {activeResults.length > 0 && (
+                <div>
+                  <p className="text-gray-500">Laatste niveau</p>
+                  <p className="font-semibold text-gray-800">{activeResults[0].aviLevel}</p>
+                </div>
+              )}
+            </div>
+          </div>
         )}
 
         {/* M/E measurement hint */}
@@ -262,7 +284,7 @@ export function StudentDetailPage({ student, results, onDeleteStudent, onDeleteR
                             <td className="px-3 py-2.5 text-center text-gray-500 whitespace-nowrap line-through">
                               {formatSeconds(result.readingTimeSeconds)}
                             </td>
-                            <td className="px-3 py-2.5 line-through text-gray-400 text-xs">{result.aviLevel}</td>
+                            <td className="px-3 py-2.5 line-through text-gray-400 text-xs">{result.classification === 'beheersingsniveau' ? 'Beheerst' : result.classification === 'instructieniveau' ? 'Instructie' : 'Frustratie'}</td>
                             <td className="px-2 py-2.5 text-right">
                               <button
                                 onClick={() => onRestoreResult(result.id)}

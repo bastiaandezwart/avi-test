@@ -10,15 +10,46 @@ interface HomePageProps {
   teachers: Teacher[];
 }
 
+function getLastResult(results: TestResult[], studentId: string): TestResult | undefined {
+  return results
+    .filter(r => r.studentId === studentId && !r.deletedAt)
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())[0];
+}
+
+function formatDate(dateStr: string): string {
+  return new Date(dateStr).toLocaleDateString('nl-NL', { day: 'numeric', month: 'short', year: 'numeric' });
+}
+
+function StudentCard({ student, results }: { student: Student; results: TestResult[] }) {
+  const lastResult = getLastResult(results, student.id);
+  return (
+    <button
+      onClick={() => navigate(`/student/${student.id}`)}
+      className="w-full bg-white rounded-xl shadow-sm border border-gray-100 p-4 text-left active:bg-gray-50 transition-colors min-h-[72px] flex items-center gap-3"
+    >
+      <Avatar name={student.name} photo={student.photo} size="md" variant="student" />
+      <div className="flex-1 min-w-0">
+        <p className="font-semibold text-gray-900 text-base truncate">{student.name}</p>
+        <p className="text-sm text-gray-500 mt-0.5">{student.group || 'Geen groep'}</p>
+      </div>
+      <div className="ml-2 text-right shrink-0">
+        {lastResult ? (
+          <>
+            <p className="text-sm font-semibold text-gray-700">{lastResult.aviLevel}</p>
+            <div className="mt-1">
+              <ClassificationBadge classification={lastResult.classification} size="sm" />
+            </div>
+            <p className="text-xs text-gray-400 mt-1">{formatDate(lastResult.date)}</p>
+          </>
+        ) : (
+          <p className="text-sm text-gray-400 italic">Geen toetsen</p>
+        )}
+      </div>
+    </button>
+  );
+}
+
 export function HomePage({ students, results, teachers }: HomePageProps) {
-  const getLastResult = (studentId: string): TestResult | undefined =>
-    results
-      .filter(r => r.studentId === studentId && !r.deletedAt)
-      .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())[0];
-
-  const formatDate = (dateStr: string) =>
-    new Date(dateStr).toLocaleDateString('nl-NL', { day: 'numeric', month: 'short', year: 'numeric' });
-
   const sortedStudents = [...students].sort((a, b) => a.name.localeCompare(b.name, 'nl'));
 
   const useGrouped = teachers.length > 0;
@@ -36,35 +67,6 @@ export function HomePage({ students, results, teachers }: HomePageProps) {
   const unassignedStudents = useGrouped
     ? sortedStudents.filter(s => !s.primaryTeacherId || !teachers.find(t => t.id === s.primaryTeacherId))
     : sortedStudents;
-
-  function StudentCard({ student }: { student: Student }) {
-    const lastResult = getLastResult(student.id);
-    return (
-      <button
-        onClick={() => navigate(`/student/${student.id}`)}
-        className="w-full bg-white rounded-xl shadow-sm border border-gray-100 p-4 text-left active:bg-gray-50 transition-colors min-h-[72px] flex items-center gap-3"
-      >
-        <Avatar name={student.name} photo={student.photo} size="md" variant="student" />
-        <div className="flex-1 min-w-0">
-          <p className="font-semibold text-gray-900 text-base truncate">{student.name}</p>
-          <p className="text-sm text-gray-500 mt-0.5">{student.group || 'Geen groep'}</p>
-        </div>
-        <div className="ml-2 text-right shrink-0">
-          {lastResult ? (
-            <>
-              <p className="text-sm font-semibold text-gray-700">{lastResult.aviLevel}</p>
-              <div className="mt-1">
-                <ClassificationBadge classification={lastResult.classification} size="sm" />
-              </div>
-              <p className="text-xs text-gray-400 mt-1">{formatDate(lastResult.date)}</p>
-            </>
-          ) : (
-            <p className="text-sm text-gray-400 italic">Geen toetsen</p>
-          )}
-        </div>
-      </button>
-    );
-  }
 
   return (
     <div className="min-h-screen bg-gray-50 pb-20">
@@ -110,7 +112,7 @@ export function HomePage({ students, results, teachers }: HomePageProps) {
                   </svg>
                 </button>
                 <div className="space-y-2">
-                  {ts.map(s => <StudentCard key={s.id} student={s} />)}
+                  {ts.map(s => <StudentCard key={s.id} student={s} results={results} />)}
                 </div>
               </div>
             ))}
@@ -120,7 +122,7 @@ export function HomePage({ students, results, teachers }: HomePageProps) {
                   Niet toegewezen ({unassignedStudents.length})
                 </p>
                 <div className="space-y-2">
-                  {unassignedStudents.map(s => <StudentCard key={s.id} student={s} />)}
+                  {unassignedStudents.map(s => <StudentCard key={s.id} student={s} results={results} />)}
                 </div>
               </div>
             )}
@@ -130,7 +132,7 @@ export function HomePage({ students, results, teachers }: HomePageProps) {
             <p className="text-sm text-gray-500 font-medium">
               {students.length} leerling{students.length !== 1 ? 'en' : ''}
             </p>
-            {sortedStudents.map(s => <StudentCard key={s.id} student={s} />)}
+            {sortedStudents.map(s => <StudentCard key={s.id} student={s} results={results} />)}
           </div>
         )}
       </div>
